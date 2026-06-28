@@ -237,5 +237,18 @@ class Utility(commands.Cog):
         for i in range(len(options)):
             await message.add_reaction(emojis[i])
 
+
+    @commands.command(name="sync")
+    @commands.is_owner()
+    async def sync_text(self, ctx):
+        """Manual sync slash commands via text command"""
+        import config
+        guild = discord.Object(id=config.GUILD_ID)
+
+        self.bot.tree.copy_global_to(guild=guild)
+        synced = await self.bot.tree.sync(guild=guild)
+
+        await ctx.send(f"Synced {len(synced)} slash commands! Type `/` to see them.")
+
 async def setup(bot):
     await bot.add_cog(Utility(bot))
