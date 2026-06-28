@@ -1,27 +1,17 @@
-# OPTION 1: Background Worker (Free tier - sleeps after 15 min)
-# Use this if you upgrade to paid ($7/month)
 services:
-  - type: worker
+  - type: web
     name: obsidian-marketplace-bot
     runtime: python
     plan: free
-    buildCommand: pip install -r requirements.txt
+    buildCommand: |
+      pip install --upgrade pip
+      pip install discord.py>=2.3.0
+      pip install python-dotenv>=1.0.0
+      pip install Flask>=3.0.0
     startCommand: python main.py
     envVars:
       - key: DISCORD_TOKEN
         sync: false
+      - key: PYTHON_VERSION
+        value: 3.11.0
     region: oregon
-
-# OPTION 2: Web Service (Free tier - stays awake with health checks)
-# Uncomment below and comment out OPTION 1 to use web service
-# services:
-#   - type: web
-#     name: obsidian-marketplace-bot
-#     runtime: python
-#     plan: free
-#     buildCommand: pip install -r requirements.txt
-#     startCommand: python web_main.py
-#     envVars:
-#       - key: DISCORD_TOKEN
-#         sync: false
-#     region: oregon
